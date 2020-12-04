@@ -31,7 +31,12 @@ pub(crate) fn features() -> Features {
         target_arch = "x86_64",
         all(
             any(target_arch = "aarch64", target_arch = "arm"),
-            any(target_os = "android", target_os = "fuchsia", target_os = "freebsd", target_os = "linux")
+            any(
+                target_os = "android",
+                target_os = "fuchsia",
+                target_os = "freebsd",
+                target_os = "linux"
+            )
         )
     ))]
     {
@@ -49,7 +54,12 @@ pub(crate) fn features() -> Features {
 
             #[cfg(all(
                 any(target_arch = "aarch64", target_arch = "arm"),
-                any(target_os = "android", target_os = "fuchsia", target_os = "freebsd", target_os = "linux")
+                any(
+                    target_os = "android",
+                    target_os = "fuchsia",
+                    target_os = "freebsd",
+                    target_os = "linux"
+                )
             ))]
             {
                 arm::setup();
@@ -104,13 +114,12 @@ pub(crate) mod arm {
 
         #[cfg(target_os = "freebsd")]
         {
-            let buffer : *mut c_void = { let t: *const c_ulong = &caps; t} as *mut c_void;
+            let buffer: *mut c_void = {
+                let t: *const c_ulong = &caps;
+                t
+            } as *mut c_void;
             unsafe {
-                let _ret = elf_aux_info(
-                    AT_HWCAP,
-                    buffer,
-                    std::mem::size_of_val(&caps) as i32
-                );
+                let _ret = elf_aux_info(AT_HWCAP, buffer, std::mem::size_of_val(&caps) as i32);
             }
         }
 
@@ -131,7 +140,10 @@ pub(crate) mod arm {
             const OFFSET: c_ulong = 0;
 
             #[cfg(target_os = "freebsd")]
-            let buffer : *mut c_void = { let t: *const c_ulong = &caps; t} as *mut c_void;
+            let buffer: *mut c_void = {
+                let t: *const c_ulong = &caps;
+                t
+            } as *mut c_void;
 
             #[cfg(not(target_os = "freebsd"))]
             let caps = {
@@ -143,11 +155,7 @@ pub(crate) mod arm {
             {
                 const AT_HWCAP2: c_int = 26;
                 unsafe {
-                    let _ret = elf_aux_info(
-                        AT_HWCAP2,
-                        buffer,
-                        std::mem::size_of_val(&caps) as i32
-                    );
+                    let _ret = elf_aux_info(AT_HWCAP2, buffer, std::mem::size_of_val(&caps) as i32);
                 };
             }
 
